@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class Category extends Model
 {
     public $timestamps = false;
     protected $fillable = [
@@ -13,11 +13,11 @@ class Categories extends Model
 
     public function articles() :HasMany
     {
-        return this->hasMany(Article::class);
+        return $this->hasMany(Article::class);
     }
 
     public function user()
     {
-        return this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
