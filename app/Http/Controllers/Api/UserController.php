@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UserRequest;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -20,8 +22,30 @@ class UserController extends Controller
         ]);
 
         return $this->success(
-            UserResource::make($user),
+            UserResource::make($user, null),
             "Successfully added User"
+        );
+    }
+
+    public function login(UserRequest $request)
+    {
+        $data = $request->validated();
+        $res = Auth::attempt($request->validated());
+        if(!$res){
+            throw new HttpResponseException(response([
+                'errors' => [
+                    'username or password is wrong'
+                ]
+                ], 401
+            ));
+        }
+
+        $user = User::where('email', $data['email'])->first();
+        $token = $user->createToken('Personal Access Token')->accessToken;
+
+        return $this->success(
+            UserResource::make($user, $token),
+            "Berhasil Login"
         );
     }
 }
