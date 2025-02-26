@@ -45,7 +45,7 @@ class UserController extends Controller
 
         return $this->success(
             UserResource::make($user, $token),
-            "Berhasil Login"
+            "Successfully Login"
         );
     }
 }
