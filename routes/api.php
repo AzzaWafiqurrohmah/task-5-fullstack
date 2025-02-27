@@ -7,20 +7,21 @@ use App\Http\Middleware\ApiAuthMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:api');
 
 
 Route::prefix('/v1')-> group(function() {
 
-    Route::controller(UserController::class)->prefix('/user')->group(function (){
+    Route::middleware('guest')->controller(UserController::class)->prefix('/user')->group(function (){
         Route::post('/register', 'register');
-        Route::post('/login', 'login');
+        Route::post('/login', 'login')->name('login');
     });
 
     Route::middleware('auth:api')->group(function () {
-        
+        Route::post('/user/logout', [UserController::class, 'logout']);
+
         Route::controller(CategoryController::class)->prefix('/category')->group(function (){
 
             Route::delete('/delete/{category}', 'delete')->missing(function (){

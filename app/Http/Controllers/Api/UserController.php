@@ -8,6 +8,7 @@ use App\Http\Requests\Api\UserRequest;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,6 +47,14 @@ class UserController extends Controller
         return $this->success(
             UserResource::make($user, $token),
             "Successfully Login"
+        );
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->token()->delete();
+        return $this->success(
+            message: "You've successfully log out"
         );
     }
 }
