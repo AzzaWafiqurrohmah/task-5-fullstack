@@ -21,9 +21,10 @@ class ArticleController extends Controller
         $data = $request->validated();
         $data['user_id'] = $user->id;
 
-        ArticleRepository::save($data);
+        $article = ArticleRepository::save($data);
         return $this->success(
-            message: 'Successfully Added new Article'
+            ArticleResource::make($article),
+            'Successfully Added new Article'
         );
     }
 
