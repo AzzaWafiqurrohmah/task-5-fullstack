@@ -23,10 +23,10 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $register = $this->is('api/v1/register');
+        $register = $this->is('/register');
         return [
             'email' => 'required|email|' . ($register ? 'unique:users,email' : ''),
-            'password' => 'required|size:8'
+            'password' => 'required|size:8|' . ($register ? 'confirmed' : '')
         ];
     }
 
