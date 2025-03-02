@@ -65,4 +65,9 @@ trait ApiResponser
 
         return $this->success($data);
     }
+
+    protected function validationError($data)
+    {
+        return $this->error($data, 'Validation error', 422);
+    }
 }
